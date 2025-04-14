@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model ProcessedContent {
+  id            String    @id @default(uuid())
+  url           String    @unique
+  rawContent    String    // Raw HTML content
+  cleanContent  String    // Cleaned content without unnecessary elements
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  readingStatus String    @default("UNREAD") // UNREAD, IN_PROGRESS, READ
+  metadata      Metadata?
+}
+
+model Metadata {
+  id              String          @id @default(uuid())
+  title           String
+  author          String?
+  publishDate     DateTime?
+  source          String
+  contentType     String
+  primaryCategory String?
+  readingTime     Int             // in minutes
+  wordCount       Int
+  characterCount  Int
+  contentId       String          @unique
+  content         ProcessedContent @relation(fields: [contentId], references: [id], onDelete: Cascade)
+}
