@@ -43,3 +43,8 @@ scripts/
 prisma/dev.db
 prisma/dev.db-journal
 node_modules/.prisma
+
+# Terraform
+terraform.*
+.terraform.*
+.terraform/*
