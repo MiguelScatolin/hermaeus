@@ -75,13 +75,29 @@ jobs:
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v2
       with:
-        workload_identity_provider: 'projects/492440330265/locations/global/workloadIdentityPools/github/providers/hermaeus'
+        workload_identity_provider: projects/492440330265/locations/global/workloadIdentityPools/github/providers/hermaeus
         service_account: ${{ secrets.SERVICE_ACCOUNT }}
+        create_credentials_file: true
+        export_environment_variables: true
+        universe: googleapis.com
+        cleanup_credentials: true
+        access_token_lifetime: 3600s
+        access_token_scopes: https://www.googleapis.com/auth/cloud-platform
+        id_token_include_email: false
 
-    - name: Test Authentication
+    - name: Setup Google Cloud CLI
+      uses: google-github-actions/setup-gcloud@v2
+
+    - name: Debug Authentication
       run: |
+        echo "Checking authentication status..."
         gcloud auth list
+        echo "Current account:"
         gcloud config get-value account
+        echo "Project:"
+        gcloud config get-value project
+        echo "Environment variables:"
+        env | grep -E "(GOOGLE|GCLOUD|CLOUDSDK)" | sort
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
