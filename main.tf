@@ -6,7 +6,6 @@ provider "google" {
   ]
 }
 
-
 #receive short-lived access token
 data "google_service_account_access_token" "default" {
   provider               = google.impersonation
@@ -28,6 +27,11 @@ terraform {
       source  = "hashicorp/google"
       version = "6.8.0"
     }
+
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "~> 3.0.1"
+    }
   }
 }
 
@@ -36,6 +40,25 @@ provider "google" {
   region       = var.region
   zone         = var.zone
   access_token = data.google_service_account_access_token.default.access_token
+}
+
+provider "docker" {}
+
+
+resource "docker_image" "api_image" {
+  name = "hermaeus-api-image:latest"
+  build {
+    context = "./backend"
+  }
+}
+
+resource "docker_container" "api_container" {
+  name  = "hermaeus-container"
+  image = docker_image.api_image.name
+  ports {
+    internal = 5000 # Port exposed by your API in the Dockerfile
+    external = 8080 # Port to map on the host machine
+  }
 }
 
 resource "google_compute_network" "vpc_network" {
