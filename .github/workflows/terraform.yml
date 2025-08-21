@@ -78,6 +78,11 @@ jobs:
         workload_identity_provider: 'projects/492440330265/locations/global/workloadIdentityPools/github/providers/hermaeus'
         service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
+    - name: Test Authentication
+      run: |
+        gcloud auth list
+        gcloud config get-value account
+
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
