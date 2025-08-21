@@ -42,6 +42,13 @@ resource "docker_container" "api_container" {
   }
 }
 
+resource "google_artifact_registry_repository" "artifact-repository" {
+  location      = "us-central1"
+  repository_id = "hermaeus-repository"
+  description   = "Docker repository"
+  format        = "DOCKER"
+}
+
 resource "google_compute_network" "vpc_network" {
   name = "terraform-network"
 }
