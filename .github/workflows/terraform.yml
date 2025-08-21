@@ -59,7 +59,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     env:
-      TF_VAR_terraform_service_account: ${{ secrets.SERVICE_ACCOUNT }}
       TF_VAR_project: "hermaeus-466914"
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
