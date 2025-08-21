@@ -4,7 +4,15 @@ variable "terraform_service_account" {
 
 }
 
-variable "project_id" {
+variable "project" {
   type        = string
   description = "ID of the project in scope"
+}
+
+variable "region" {
+  default = "us-central1"
+}
+
+variable "zone" {
+  default = "us-central1-a"
 }
