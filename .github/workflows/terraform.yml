@@ -51,6 +51,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   terraform:
@@ -59,8 +60,7 @@ jobs:
     environment: production
     env:
       TF_VAR_terraform_service_account: ${{ secrets.SERVICE_ACCOUNT }}
-      TF_VAR_project: ${{ secrets.PROJECT }}
-      GOOGLE_CREDENTIALS: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+      TF_VAR_project: "hermaeus-466914"
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
