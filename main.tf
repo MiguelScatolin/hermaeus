@@ -1,25 +1,7 @@
-provider "google" {
-  alias = "impersonation"
-  scopes = [
-    "https://www.googleapis.com/auth/cloud-platform",
-    "https://www.googleapis.com/auth/userinfo.email",
-  ]
-}
-
-#receive short-lived access token
-data "google_service_account_access_token" "default" {
-  provider               = google.impersonation
-  target_service_account = var.terraform_service_account
-  scopes                 = ["cloud-platform", "userinfo-email"]
-  lifetime               = "3600s"
-}
-
-
 terraform {
   backend "gcs" {
-    bucket                      = "hermaeus-terraform-state"
-    prefix                      = "terraform/state"
-    impersonate_service_account = "terraform@hermaeus-466914.iam.gserviceaccount.com"
+    bucket = "hermaeus-terraform-state"
+    prefix = "terraform/state"
   }
 
   required_providers {
@@ -36,10 +18,9 @@ terraform {
 }
 
 provider "google" {
-  project      = var.project
-  region       = var.region
-  zone         = var.zone
-  access_token = data.google_service_account_access_token.default.access_token
+  project = var.project
+  region  = var.region
+  zone    = var.zone
 }
 
 provider "docker" {}
