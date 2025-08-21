@@ -72,6 +72,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        workload_identity_provider: 'projects/492440330265/locations/global/workloadIdentityPools/github/providers/hermaeus'
+        service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
